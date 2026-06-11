@@ -1,0 +1,14 @@
+
+# Per-run analysis artifacts (session-specific, not reusable)
+data/classification-results.json
+data/gap-classification.json
+data/theme-summary.json
+data/priority-matrix.json
+data/draft-overlap-results.json
+data/node_modules/
+
+# Run output (local only, never committed)
+runs/
+
+# Playwright persistent browser context (cached auth, sessions)
+browser-data/

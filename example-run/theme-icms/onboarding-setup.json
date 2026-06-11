@@ -1,0 +1,5 @@
+[
+  { "id": "100000007", "title": "New team member cannot complete environment setup — prerequisite check fails", "theme": "onboarding-setup", "severity": 3 },
+  { "id": "100000008", "title": "Application registration wizard fails with 'not authorized' after following docs", "theme": "onboarding-setup", "severity": 3 },
+  { "id": "100000009", "title": "Role configuration incomplete — Set-RoleConfig returns 'environment not configured'", "theme": "onboarding-setup", "severity": 2 }
+]

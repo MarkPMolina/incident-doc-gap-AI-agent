@@ -1,0 +1,35 @@
+{
+  "authentication-failures": {
+    "display_name": "Authentication & Token Errors",
+    "count": 89,
+    "signal_count": 62,
+    "non_signal_count": 27,
+    "severity_distribution": { "2": 8, "3": 41, "4": 13 }
+  },
+  "api-rate-limits": {
+    "display_name": "API Rate Limiting & Throttling",
+    "count": 34,
+    "signal_count": 22,
+    "non_signal_count": 12,
+    "severity_distribution": { "2": 3, "3": 15, "4": 4 }
+  },
+  "onboarding-setup": {
+    "display_name": "Onboarding & Initial Setup",
+    "count": 47,
+    "signal_count": 31,
+    "non_signal_count": 16,
+    "severity_distribution": { "2": 5, "3": 19, "4": 7 }
+  },
+  "deployment-pipeline": {
+    "display_name": "Deployment & Pipeline Failures",
+    "count": 56,
+    "signal_count": 38,
+    "non_signal_count": 18,
+    "severity_distribution": { "1": 2, "2": 12, "3": 20, "4": 4 }
+  },
+  "unclassified": {
+    "count": 18,
+    "signal_count": 11,
+    "non_signal_count": 7
+  }
+}

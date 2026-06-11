@@ -1,0 +1,42 @@
+[
+  {
+    "priority": "P1",
+    "theme": "Onboarding & Initial Setup",
+    "slug": "onboarding-setup",
+    "incidents": 47,
+    "signal_count": 31,
+    "avoidable": "12 (~40%)",
+    "classification": "real_doc_gap",
+    "fix_effort": "High"
+  },
+  {
+    "priority": "P2",
+    "theme": "Authentication & Token Errors",
+    "slug": "authentication-failures",
+    "incidents": 89,
+    "signal_count": 62,
+    "avoidable": "19 (~30%)",
+    "classification": "partial_doc_gap",
+    "fix_effort": "Medium"
+  },
+  {
+    "priority": "P2",
+    "theme": "API Rate Limiting & Throttling",
+    "slug": "api-rate-limits",
+    "incidents": 34,
+    "signal_count": 22,
+    "avoidable": "7 (~30%)",
+    "classification": "partial_doc_gap",
+    "fix_effort": "Medium"
+  },
+  {
+    "priority": "P3",
+    "theme": "Deployment & Pipeline Failures",
+    "slug": "deployment-pipeline",
+    "incidents": 56,
+    "signal_count": 38,
+    "avoidable": "0 (~0%)",
+    "classification": "engineering_fix",
+    "fix_effort": "N/A (engineering)"
+  }
+]

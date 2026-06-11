@@ -1,0 +1,50 @@
+{
+  "classifications": [
+    { "incidentId": "100000001", "theme": "authentication-failures", "gapClassification": "partial_doc_gap" },
+    { "incidentId": "100000002", "theme": "authentication-failures", "gapClassification": "partial_doc_gap" },
+    { "incidentId": "100000003", "theme": "authentication-failures", "gapClassification": "real_doc_gap" },
+    { "incidentId": "100000004", "theme": "api-rate-limits", "gapClassification": "partial_doc_gap" },
+    { "incidentId": "100000005", "theme": "api-rate-limits", "gapClassification": "discoverability_problem" },
+    { "incidentId": "100000006", "theme": "api-rate-limits", "gapClassification": "engineering_fix" },
+    { "incidentId": "100000007", "theme": "onboarding-setup", "gapClassification": "real_doc_gap" },
+    { "incidentId": "100000008", "theme": "onboarding-setup", "gapClassification": "real_doc_gap" },
+    { "incidentId": "100000009", "theme": "onboarding-setup", "gapClassification": "partial_doc_gap" },
+    { "incidentId": "100000010", "theme": "deployment-pipeline", "gapClassification": "engineering_fix" },
+    { "incidentId": "100000011", "theme": "deployment-pipeline", "gapClassification": "operational_gap" },
+    { "incidentId": "100000012", "theme": "deployment-pipeline", "gapClassification": "no_doc_action_needed" }
+  ],
+  "gapCounts": {
+    "real_doc_gap": 3,
+    "partial_doc_gap": 4,
+    "discoverability_problem": 1,
+    "engineering_fix": 2,
+    "operational_gap": 1,
+    "no_doc_action_needed": 1
+  },
+  "themeRollup": {
+    "authentication-failures": {
+      "primaryClassification": "partial_doc_gap",
+      "draftScopeIncidents": ["100000001", "100000002", "100000003"],
+      "avoidableCount": 2,
+      "totalIncidents": 3
+    },
+    "api-rate-limits": {
+      "primaryClassification": "partial_doc_gap",
+      "draftScopeIncidents": ["100000004"],
+      "avoidableCount": 1,
+      "totalIncidents": 3
+    },
+    "onboarding-setup": {
+      "primaryClassification": "real_doc_gap",
+      "draftScopeIncidents": ["100000007", "100000008", "100000009"],
+      "avoidableCount": 2,
+      "totalIncidents": 3
+    },
+    "deployment-pipeline": {
+      "primaryClassification": "engineering_fix",
+      "draftScopeIncidents": [],
+      "avoidableCount": 0,
+      "totalIncidents": 3
+    }
+  }
+}

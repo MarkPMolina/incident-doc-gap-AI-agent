@@ -1,0 +1,133 @@
+# Incident Doc Gap — Canonical Theme Taxonomy
+# Version: 1  (bump this number whenever themes or keywords change)
+# Last modified: 2026-06-01
+#
+# changeLog:
+#   - version: 1
+#     date: 2026-06-01
+#     changes: "Initial taxonomy with 4 example themes"
+#
+# This is a living codebook for incident doc gap analysis. Sessions must assign
+# incidents to existing themes before proposing new ones. This file is the
+# SOLE SOURCE of theme names — no new themes may be used in reports without
+# first adding them here.
+#
+# How to use (two-pass, context-weighted scoring):
+#
+#   Pass A — High-signal fields:
+#   1. For each signal incident, build:
+#      - primary_text = Title + CustomerSymptom
+#      - secondary_text = RootCauseSummary + ResolutionSummary
+#   2. Score each theme:
+#      - +3 per matching_signals keyword in Title
+#      - +2 per matching_signals keyword in CustomerSymptom
+#      - +1 per matching_signals keyword in secondary_text
+#      - If Title contains a keyword from ANOTHER theme's exclusion_signals,
+#        suppress this theme's score to 0 (the incident clearly belongs elsewhere)
+#   3. Assign to the highest-scoring theme (score ≥ 1).
+#   4. Tie-break: prefer the theme with the higher primary_text score.
+#      Then use boundary_notes. Then prefer higher historical volume.
+#
+#   Pass B — Residual (unclassified after Pass A):
+#   5. For incidents scoring 0 everywhere in Pass A, use full concatenated
+#      text with flat +1 scoring. Threshold ≥ 2 to assign.
+#   6. Still < 2? Mark as "unclassified".
+#
+#   New theme proposals:
+#   7. If >5 unclassified share a pattern in Title + CustomerSymptom,
+#      propose a new theme. Do NOT propose based solely on RootCause overlap.
+#
+# Fields:
+#   slug                — Stable kebab-case ID (never rename once assigned)
+#   display_name        — Human-readable name used in reports
+#   matching_signals    — Keywords, error messages, cmdlets, components that
+#                         indicate an incident belongs to this theme
+#   exclusion_signals   — Keywords in the Title that SUPPRESS this theme's claim.
+#                         If an incident's title matches another theme's core
+#                         keywords listed here, this theme cannot claim it.
+#   boundary_notes      — What does NOT belong (prevents theme sprawl)
+#   first_appeared      — Which report period introduced this theme
+#   related_themes      — Slugs of themes that are adjacent/easily confused
+#   example_incident_ids — 3-5 representative incident IDs for reviewer sanity-checking
+
+themes:
+
+  - slug: authentication-failures
+    display_name: "Authentication & Token Errors"
+    matching_signals:
+      - cmdlets: ["Connect-AdminShell", "Get-AuthToken", "Invoke-TokenRefresh"]
+      - errors: ["token expired", "IDX10223", "unable to acquire token", "certificate not found", "auth failure", "access denied"]
+      - components: ["OAuth", "certificate", "token cache", "identity provider"]
+      - keywords: ["authenticate", "sign-in", "credential", "SSO", "federation"]
+    exclusion_signals:
+      - "rate limit"
+      - "throttle"
+      - "429"
+      - "enrollment"
+      - "onboarding"
+    boundary_notes: >
+      Only authentication/authorization problems. Does NOT include rate limiting
+      (that's api-rate-limits) or credential enrollment (that's onboarding-setup).
+    first_appeared: "2026-Q1"
+    related_themes: ["onboarding-setup"]
+    example_incident_ids: ["100000001", "100000002", "100000003"]
+
+  - slug: api-rate-limits
+    display_name: "API Rate Limiting & Throttling"
+    matching_signals:
+      - cmdlets: ["Invoke-BatchOperation", "Get-ThrottleStatus"]
+      - errors: ["429 Too Many Requests", "rate limit exceeded", "throttled", "retry-after"]
+      - components: ["API gateway", "batch processor", "request queue"]
+      - keywords: ["rate limit", "throttle", "batch", "429", "backoff", "retry"]
+    exclusion_signals:
+      - "auth failure"
+      - "token expired"
+      - "certificate"
+      - "deployment"
+    boundary_notes: >
+      Only rate limiting and throttling issues. Does NOT include auth failures
+      that happen to mention HTTP errors, or deployment throttling (that's
+      deployment-pipeline).
+    first_appeared: "2026-Q1"
+    related_themes: ["authentication-failures"]
+    example_incident_ids: ["100000004", "100000005", "100000006"]
+
+  - slug: onboarding-setup
+    display_name: "Onboarding & Initial Setup"
+    matching_signals:
+      - cmdlets: ["Initialize-Environment", "Register-Application", "Set-RoleConfig"]
+      - errors: ["not registered", "setup incomplete", "prerequisite missing", "environment not configured"]
+      - components: ["registration", "provisioning", "role assignment", "setup wizard"]
+      - keywords: ["onboard", "first time", "setup", "register", "provision", "getting started"]
+    exclusion_signals:
+      - "token expired"
+      - "rate limit"
+      - "deployment"
+      - "remote access"
+    boundary_notes: >
+      Covers initial setup and onboarding failures. Does NOT include ongoing
+      auth issues after successful setup (that's authentication-failures) or
+      deployment problems (that's deployment-pipeline).
+    first_appeared: "2026-Q1"
+    related_themes: ["authentication-failures"]
+    example_incident_ids: ["100000007", "100000008", "100000009"]
+
+  - slug: deployment-pipeline
+    display_name: "Deployment & Pipeline Failures"
+    matching_signals:
+      - cmdlets: ["Start-Deployment", "Get-DeploymentStatus", "Invoke-Rollback"]
+      - errors: ["deployment failed", "rollback initiated", "region unavailable", "pipeline timeout", "manifest validation error"]
+      - components: ["deployment service", "rollout infrastructure", "manifest validator", "region controller"]
+      - keywords: ["deploy", "rollout", "pipeline", "release", "canary", "staged"]
+    exclusion_signals:
+      - "auth failure"
+      - "rate limit"
+      - "onboarding"
+      - "enrollment"
+    boundary_notes: >
+      Covers deployment and release pipeline failures. Does NOT include auth
+      issues during deployment (that's authentication-failures) or initial
+      setup of deployment tools (that's onboarding-setup).
+    first_appeared: "2026-Q1"
+    related_themes: ["api-rate-limits"]
+    example_incident_ids: ["100000010", "100000011", "100000012"]

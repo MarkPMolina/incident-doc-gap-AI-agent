@@ -1,0 +1,5 @@
+[
+  { "id": "100000001", "title": "Unable to authenticate after credential rotation — token cache stale", "theme": "authentication-failures", "severity": 3 },
+  { "id": "100000002", "title": "IDX10223 error when connecting to admin shell after certificate renewal", "theme": "authentication-failures", "severity": 3 },
+  { "id": "100000003", "title": "Federation endpoint timeout during sign-in from isolated network segment", "theme": "authentication-failures", "severity": 2 }
+]
