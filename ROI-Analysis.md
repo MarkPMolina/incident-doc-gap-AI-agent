@@ -197,6 +197,22 @@ Based on input from an experienced on-call engineer: handling time ranges from 3
 
 The break-even threshold is low enough that the program is viable even under pessimistic assumptions about per-incident handling time.
 
+### Are we hitting it?
+
+Based on the data above: **yes, with reasonable confidence.**
+
+The calculation estimates approximately 6 incidents per month plausibly prevented or materially shortened — 3–6× the break-even threshold of 1–2 incidents. That estimate rests on three inputs, each derived independently:
+
+1. **Volume decline in treated themes.** Four themes with published documentation show monotonic decline across three consecutive measurement periods, totaling 46 fewer incidents in Month 3 vs. Month 1 (82→36). Three themes that increased are explained by known external events (hardware version rollout, certificate expiry, new deployment wave).
+
+2. **Human-calibrated addressability rate.** A random 18-incident sample found 11% confirmed doc-addressable — conservative, since "docs existed but user didn't search" (22%) may partially respond to improved discoverability.
+
+3. **Adoption discount.** The 50% discount (only half of addressable incidents are actually prevented) is deliberately pessimistic. Even so, the result (6/month) clears the break-even bar by a wide margin.
+
+**The margin matters.** Break-even requires just 1–2 prevented incidents per month. Even if the true prevention rate is half of the conservative estimate — 3 incidents instead of 6 — the program still exceeds break-even. The estimate would need to be wrong by more than 5× before the program fails to pay for itself.
+
+This is a directional assessment, not a proven measurement. The limitations noted below (small sample, uncontrolled confounders, no page-view telemetry) all apply. But the gap between estimated impact and break-even threshold is large enough that the conclusion holds under a wide range of assumptions.
+
 ### What this calculation does not include
 
 - Value of theme identification / operational intelligence
@@ -293,3 +309,40 @@ For comparison, a single prevented Sev3 incident saves approximately 3 hours of 
 ### Why this matters outside large enterprises
 
 Within large enterprises, token costs are effectively subsidized and invisible to most teams. Outside that context — or in a future where compute costs are accounted for more rigorously — the token analysis demonstrates that the program remains viable even at market rates. The break-even threshold in compute terms is extremely low.
+
+---
+
+## Appendix: Development Token Footprint
+
+*This section is separate from the operational ROI analysis above. It documents the one-time token cost of building and iterating on the agent — a historical record, not an input to the ongoing break-even calculation.*
+
+### Background
+
+The incident-doc-gap agent was developed iteratively over approximately three weeks by a single developer working interactively with an AI coding assistant. Much of the token consumption reflects the learning process itself — experimenting with prompt design, debugging agent workflows, understanding LLM behavior, and running the pipeline repeatedly to validate changes. This was the developer's first multi-agent project.
+
+### Methodology
+
+Session-level token data was collected from the AI assistant's session store. Sessions were classified as incident-doc-gap-related based on session summaries and content. Two production-run sessions (~147M session-store tokens) were excluded, since their operational cost is already modeled in the operating-cost appendix. A third production run predates the data window and is not included in either total.
+
+**Note on token accounting:** Session-store tokens are broader than the per-run effective-token estimate used in the operating-cost appendix. They include context window loading, conversation overhead, file reads, sub-agent calls, retries, and interactive debugging. These are not directly comparable to the 2.56M effective-token-per-run figure — they represent the full cost of a human-in-the-loop development process.
+
+### Token consumption
+
+| Measure | Value |
+|---------|-------|
+| Related development sessions | 19 |
+| Gross session tokens (all related) | ~406M |
+| Production-run sessions excluded | ~147M |
+| **Development/refinement tokens** | **~260M** |
+
+### Cost at various token price levels
+
+| Assumed $/M tokens | Development token cost | Context |
+|--------------------|----------------------|---------|
+| $3.00 (current market, Sonnet-class) | ~$780 | Likely subsidized |
+| $10.00 | ~$2,600 | Post-subsidy pricing |
+| $25.00 | ~$6,500 | High-demand scenario |
+| $50.00 | ~$13,000 | Compute-scarce scenario |
+| $100.00 | ~$26,000 | Extreme case |
+
+Within large enterprises, this cost is absorbed by existing AI assistant licensing — no per-token charges are passed to individual teams. At external market rates, it represents the equivalent of roughly 1–4 weeks of a single FTE's loaded cost — to build a capability that now operates at 3.5 hours per month.
